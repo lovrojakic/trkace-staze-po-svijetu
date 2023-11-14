@@ -23,11 +23,11 @@ do
 			echo "Database drop successful"
 			;;
 		sql)
-			pg_dump trkacestaze > trkace_staze_po_svijetu.sql
+			pg_dump trkacestaze > data/trkace_staze_po_svijetu.sql
 			echo "SQL dump successful"
 			;;
 		json)
-			psql trkacestaze -P tuples_only < queries/export_json.sql > trkace_staze_po_svijetu.json
+			psql trkacestaze -P tuples_only < queries/export_json.sql > data/trkace_staze_po_svijetu.json
 			echo "JSON dump successful"
 			;;
 		csv)

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Trkaće staze po svijetu</title>
+<description>Otvoreni skup podataka o trkaćim stazama po svijetu.</description>
+<br>
+<author>Lovro Jakić</author>
+<br>
+</head>
+<body>
+
+<input id="text_filter" />
+<select id="category_filter">
+  <option value="staza.naziv">naziv staze</option>
+  <option value="oznaka_drzave">oznaka države</option>
+  <option value="datum_otvorenja">datum otvorenja</option>
+  <option value="podloga">podloga</option>
+  <option value="duljina_km">duljina (km)</option>
+  <option value="broj_zavoja">broj zavoja</option>
+  <option value="url">url</option>
+  <option value="kapacitet_gledatelja">kapacitet gledatelja</option>
+</select>
+<button onclick="search()">Pretraži</button>
+<button onclick="download_JSON()">JSON</button>
+
+<br>
+
+<table border="1" align="left">
+    <thead>
+        <tr>
+            <th>naziv staze</th>
+            <th>oznaka države</th>
+            <th>datum otvorenja</th>
+            <th>podloga</th>
+            <th>duljina (km)</th>
+            <th>broj zavoja</th>
+            <th>url</th>
+            <th>kapacitet gledatelja</th>
+            <th>rekord</th>
+            <th>natjecanja</th>
+        </tr>
+    </thead>
+    <tbody id="table"></tbody>
+</table>
+
+<script>
+    function search() {
+        const old_tbody = document.getElementById("table");
+        const new_tbody = document.createElement('tbody');
+        new_tbody.id = "table"
+        fetch("datatable/get_json?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
+            .then(response => response.json())
+            .then(json =>
+                json.items[0].forEach((track) => {
+                    let row = new_tbody.insertRow();
+                    let naziv = row.insertCell();
+                    naziv.innerHTML = track.naziv;
+                    let oznaka_drzave = row.insertCell();
+                    oznaka_drzave.innerHTML = track.oznaka_drzave;
+                    let datum_otvorenja = row.insertCell();
+                    datum_otvorenja.innerHTML = track.datum_otvorenja;
+                    let podloga = row.insertCell();
+                    podloga.innerHTML = track.podloga;
+                    let duljina_km = row.insertCell();
+                    duljina_km.innerHTML = track.duljina_km;
+                    let broj_zavoja = row.insertCell();
+                    broj_zavoja.innerHTML = track.broj_zavoja;
+                    let url = row.insertCell();
+                    url.innerHTML = track.url;
+                    let kapacitet_gledatelja = row.insertCell();
+                    kapacitet_gledatelja.innerHTML = track.kapacitet_gledatelja;
+                    let rekord = row.insertCell();
+                    rekord.innerHTML = JSON.stringify(track.rekord);
+                    let natjecanja = row.insertCell();
+                    natjecanja.innerHTML = JSON.stringify(track.natjecanja);
+                })
+            );
+        old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
+    }
+    function download_JSON() {
+        fetch("datatable/get_json?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
+            .then( res => res.blob())
+            .then( blob => {
+                var file = window.URL.createObjectURL(blob);
+                window.location.assign(file);
+            });
+    }
+</script>
+
+</body>
+</html>
