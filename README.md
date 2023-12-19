@@ -9,6 +9,7 @@ Otvoreni skup podataka o trkaćim stazama po svijetu.
 ## Opis atributa
 
 ### Staza
+- "id": identifikacijski broj staze u bazi podataka
 - "naziv": naziv staze
 - "oznaka_države": ISO 3166-1 Alpha-3 oznaka države u kojoj se nalazi staza
 - "datum_otvorenja": ISO 8601 datum otvorenja staze

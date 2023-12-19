@@ -1,91 +1,199 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Trkaće staze po svijetu</title>
-<description>Otvoreni skup podataka o trkaćim stazama po svijetu.</description>
-<br>
-<author>Lovro Jakić</author>
-<br>
+    <meta charset="utf-8">
+    <title>Trkaće staze po svijetu</title>
+    <meta name="description" content="Otvoreni skup podataka o trkaćim stazama po svijetu.">
+    <meta name="keywords" content="otvoreni podaci, trkaće staze">
+    <meta name="author" content="Lovro Jakić">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
 </head>
+
 <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Trkaće staze po svijetu</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-flex">
+                <div class="collapse navbar-collapse d-flex" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Naslovnica</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Tablica</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Preuzimanja
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/download_csv">CSV</a></li>
+                                <li><a class="dropdown-item" href="/download_json">JSON</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<input id="text_filter" />
-<select id="category_filter">
-  <option value="staza.naziv">naziv staze</option>
-  <option value="oznaka_drzave">oznaka države</option>
-  <option value="datum_otvorenja">datum otvorenja</option>
-  <option value="podloga">podloga</option>
-  <option value="duljina_km">duljina (km)</option>
-  <option value="broj_zavoja">broj zavoja</option>
-  <option value="url">url</option>
-  <option value="kapacitet_gledatelja">kapacitet gledatelja</option>
-</select>
-<button onclick="search()">Pretraži</button>
-<button onclick="download_JSON()">JSON</button>
+    <div class="container">
+        <div class="p-5">
+            <form onsubmit="return false">
+                <div class="mb-3">
+                    <label for="text_filter" class="form-label">Polje za pretragu</label>
+                    <input id="text_filter" class="form-control" type="search" placeholder="Unesite vrijednost"
+                        aria-label="Unesite vrijednost" />
+                    <div id="text_filter_help" class="form-text">Po ovoj vrijednosti će se pretraživati podaci.</div>
+                </div>
+                <div class="mb-3">
+                    <select class="form-control custom-select" id="category_filter">
+                        <option value="wildcard" selected>Odaberite polje za pretragu</option>
+                        <option value="wildcard">Sva polja (wildcard)</option>
+                        <option value="staza.naziv">Naziv staze</option>
+                        <option value="staza.oznaka_drzave">Oznaka države</option>
+                        <option value="staza.datum_otvorenja">Datum otvorenja</option>
+                        <option value="staza.podloga">Podloga</option>
+                        <option value="staza.duljina_km">Duljina (km)</option>
+                        <option value="staza.broj_zavoja">Broj zavoja</option>
+                        <option value="staza.url">URL</option>
+                        <option value="staza.kapacitet_gledatelja">Kapacitet gledatelja</option>
+                        <option value="rekord.vrijeme">Rekordno vrijeme</option>
+                        <option value="rekord.vozilo">Rekordno vozilo</option>
+                        <option value="vozac.ime">Ime rekordera</option>
+                        <option value="vozac.prezime">Prezime rekordera</option>
+                        <option value="vozac.datum_rodenja">Datum rođenja rekordera</option>
+                        <option value="vozac.oznaka_drzave">Oznaka države rekordera</option>
+                        <option value="natjecanje.godina">Godina natjecanja</option>
+                        <option value="natjecanje.naziv">Naziv natjecanja</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-secondary" onclick="search()">Pretraži</button>
+            </form>
 
-<br>
+            <div class="dropdown">
+                <button class="btn btn-danger dropdown-toggle float-end" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Izvezi podatke
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <button class="dropdown-item" onclick="export_csv()">CSV</a></li>
+                        <button class="dropdown-item" onclick="export_json()">JSON</a></li>
+                </ul>
+            </div>
+        </div>
 
-<table border="1" align="left">
-    <thead>
-        <tr>
-            <th>naziv staze</th>
-            <th>oznaka države</th>
-            <th>datum otvorenja</th>
-            <th>podloga</th>
-            <th>duljina (km)</th>
-            <th>broj zavoja</th>
-            <th>url</th>
-            <th>kapacitet gledatelja</th>
-            <th>rekord</th>
-            <th>natjecanja</th>
-        </tr>
-    </thead>
-    <tbody id="table"></tbody>
-</table>
+        <div class="table-responsive">
+            <table class="table table-dark table-striped text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Naziv staze</th>
+                        <th>Oznaka države</th>
+                        <th>Datum otvorenja</th>
+                        <th>Podloga</th>
+                        <th>Duljina (km)</th>
+                        <th>Broj zavoja</th>
+                        <th>URL</th>
+                        <th>Kapacitet gledatelja</th>
+                        <th>Rekordno vrijeme</th>
+                        <th>Rekordno vozilo</th>
+                        <th>Ime rekordera</th>
+                        <th>Prezime rekordera</th>
+                        <th>Datum rođenja rekordera</th>
+                        <th>Oznaka države rekordera</th>
+                        <th>Natjecanja</th>
+                    </tr>
+                </thead>
+                <tbody id="table"></tbody>
+            </table>
+        </div>
+    </div>
 
-<script>
-    function search() {
-        const old_tbody = document.getElementById("table");
-        const new_tbody = document.createElement('tbody');
-        new_tbody.id = "table"
-        fetch("datatable/get_json?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
-            .then(response => response.json())
-            .then(json =>
-                json.items[0].forEach((track) => {
-                    let row = new_tbody.insertRow();
-                    let naziv = row.insertCell();
-                    naziv.innerHTML = track.naziv;
-                    let oznaka_drzave = row.insertCell();
-                    oznaka_drzave.innerHTML = track.oznaka_drzave;
-                    let datum_otvorenja = row.insertCell();
-                    datum_otvorenja.innerHTML = track.datum_otvorenja;
-                    let podloga = row.insertCell();
-                    podloga.innerHTML = track.podloga;
-                    let duljina_km = row.insertCell();
-                    duljina_km.innerHTML = track.duljina_km;
-                    let broj_zavoja = row.insertCell();
-                    broj_zavoja.innerHTML = track.broj_zavoja;
-                    let url = row.insertCell();
-                    url.innerHTML = track.url;
-                    let kapacitet_gledatelja = row.insertCell();
-                    kapacitet_gledatelja.innerHTML = track.kapacitet_gledatelja;
-                    let rekord = row.insertCell();
-                    rekord.innerHTML = JSON.stringify(track.rekord);
-                    let natjecanja = row.insertCell();
-                    natjecanja.innerHTML = JSON.stringify(track.natjecanja);
-                })
-            );
-        old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
-    }
-    function download_JSON() {
-        fetch("datatable/get_json?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
-            .then( res => res.blob())
-            .then( blob => {
-                var file = window.URL.createObjectURL(blob);
-                window.location.assign(file);
-            });
-    }
-</script>
+    <script>
+        function search() {
+            const old_tbody = document.getElementById("table");
+            const new_tbody = document.createElement('tbody');
+            new_tbody.id = "table"
+            fetch("datatable/search_json?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
+                .then(response => response.json())
+                .then(json =>
+                    json.forEach((staza) => {
+                        let row = new_tbody.insertRow();
+                        let id = row.insertCell();
+                        id.innerHTML = staza.id;
+                        let naziv = row.insertCell();
+                        naziv.innerHTML = staza.naziv;
+                        let oznaka_drzave = row.insertCell();
+                        oznaka_drzave.innerHTML = staza.oznaka_drzave;
+                        let datum_otvorenja = row.insertCell();
+                        datum_otvorenja.innerHTML = staza.datum_otvorenja;
+                        let podloga = row.insertCell();
+                        podloga.innerHTML = staza.podloga;
+                        let duljina_km = row.insertCell();
+                        duljina_km.innerHTML = staza.duljina_km;
+                        let broj_zavoja = row.insertCell();
+                        broj_zavoja.innerHTML = staza.broj_zavoja;
+                        let url = row.insertCell();
+                        url.innerHTML = staza.url;
+                        let kapacitet_gledatelja = row.insertCell();
+                        kapacitet_gledatelja.innerHTML = staza.kapacitet_gledatelja;
+                        let rekordno_vrijeme = row.insertCell();
+                        rekordno_vrijeme.innerHTML = staza.rekord.vrijeme;
+                        let rekordno_vozilo = row.insertCell();
+                        rekordno_vozilo.innerHTML = staza.rekord.vozilo;
+                        let ime_rekordera = row.insertCell();
+                        ime_rekordera.innerHTML = staza.rekord.vozac.ime;
+                        let prezime_rekordera = row.insertCell();
+                        prezime_rekordera.innerHTML = staza.rekord.vozac.prezime;
+                        let datum_rodenja_rekordera = row.insertCell();
+                        datum_rodenja_rekordera.innerHTML = staza.rekord.vozac.datum_rodenja;
+                        let oznaka_drzave_rekordera = row.insertCell();
+                        oznaka_drzave_rekordera.innerHTML = staza.rekord.vozac.oznaka_drzave;
+                        let natjecanja = row.insertCell();
+                        staza.natjecanja.forEach((natjecanje) => natjecanja.innerHTML = natjecanja.innerHTML + natjecanje.naziv + " (" + natjecanje.godina + "), ");
+                    })
+                );
+            old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
+        }
+        function export_json() {
+            fetch("datatable/search_json?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
+                .then(res => res.blob())
+                .then(blob => {
+                    var a = document.createElement("a");
+                    a.href = window.URL.createObjectURL(blob, { type: "application/json" });
+                    a.download = "export.json";
+                    a.click();
+                });
+        }
+        function export_csv() {
+            fetch("datatable/search_csv?text_filter=" + document.getElementById('text_filter').value + "&category_filter=" + document.getElementById('category_filter').value)
+                .then(res => res.blob())
+                .then(blob => {
+                    var a = document.createElement("a");
+                    a.href = window.URL.createObjectURL(blob, { type: "application/csv" });
+                    a.download = "export.csv";
+                    a.click();
+                });
+        }
+        document.addEventListener("DOMContentLoaded", search());
+    </script>
 
 </body>
+
 </html>

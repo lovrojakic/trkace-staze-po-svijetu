@@ -1,6 +1,6 @@
 SELECT json_agg(row_to_json(staza_json))
 FROM (
-	SELECT naziv, oznaka_drzave, datum_otvorenja, podloga, duljina_km, broj_zavoja, url, kapacitet_gledatelja,
+	SELECT staza.id, naziv, oznaka_drzave, datum_otvorenja, podloga, duljina_km, broj_zavoja, url, kapacitet_gledatelja,
 		(
 			SELECT row_to_json(rekord_json)
 			FROM (
