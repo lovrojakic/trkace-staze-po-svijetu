@@ -1,0 +1,295 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Trkace staze po svijetu",
+      "version": "1.0",
+      "contact": {
+        "name": "Lovro Jakic",
+        "email": "lovro.jakic@fer.hr"
+      },
+      "license": {
+        "name": "CC0 1.0 Universal",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      }
+    },
+    "paths": {
+      "/api/v1/tracks/{id}": {
+        "get": {
+          "summary": "Get track by ID",
+          "description": "Returns a single track from database",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Track"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Track with the provided ID doesn't exist"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update track by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Track"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            },
+            "400": {
+              "description": "Unique constraint violation"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete track by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            }
+          }
+        }
+      },
+      "/api/v1/tracks/new": {
+        "post": {
+          "summary": "Insert a new track",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Track"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response"
+            },
+            "400": {
+              "description": "Unique constraint violation"
+            }
+          }
+        }
+      },
+      "/api/v1/tracks/all": {
+        "get": {
+          "summary": "Get all tracks",
+          "description": "Returns all tracks from database",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Track"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No tracks in database"
+            }
+          }
+        }
+      },
+      "/api/v1/drivers/all": {
+        "get": {
+          "summary": "Get all drivers",
+          "description": "Returns all drivers from database",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Driver"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No drivers in database"
+            }
+          }
+        }
+      },
+      "/api/v1/countries/all": {
+        "get": {
+          "summary": "Get all countries",
+          "description": "Returns all countries from database",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Country"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No countries in database"
+            }
+          }
+        }
+      },
+      "/api/v1/competitions/all": {
+        "get": {
+          "summary": "Get all competitions",
+          "description": "Returns all competitions from database",
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Competition"
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No competitions in database"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Track": {
+          "type": "object",
+          "properties": {
+            "broj_zavoja": {
+              "type": "number"
+            },
+            "datum_otvorenja": {
+              "type": "string"
+            },
+            "duljina_km": {
+              "type": "number"
+            },
+            "kapacitet_gledatelja": {
+              "type": "number"
+            },
+            "naziv": {
+              "type": "string"
+            },
+            "oznaka_drzave": {
+              "type": "string"
+            },
+            "podloga": {
+              "type": "string"
+            },
+            "rekord_id": {
+              "type": "number"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        },
+        "Driver": {
+          "type": "object",
+          "properties": {
+            "datum_rodenja": {
+              "type": "string"
+            },
+            "id": {
+              "type": "number"
+            },
+            "ime": {
+              "type": "string"
+            },
+            "oznaka_drzave": {
+              "type": "string"
+            },
+            "prezime": {
+              "type": "string"
+            }
+          }
+        },
+        "Competition": {
+          "type": "object",
+          "properties": {
+            "godina": {
+              "type": "number"
+            },
+            "id": {
+              "type": "number"
+            },
+            "naziv": {
+              "type": "string"
+            }
+          }
+        },
+        "Country": {
+          "type": "object",
+          "properties": {
+            "naziv_drzave": {
+              "type": "string"
+            },
+            "oznaka_drzave": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }

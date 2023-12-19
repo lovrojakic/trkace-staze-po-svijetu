@@ -20,7 +20,8 @@ FROM staza
     FULL JOIN vozac ON vozac_id = vozac.id
     FULL JOIN odrzavaSe ON staza.id = odrzavaSe.staza_id
     FULL JOIN natjecanje ON odrzavaSe.natjecanje_id = natjecanje.id
-WHERE lower(staza.naziv) LIKE %(staza.naziv)s
+WHERE staza.id = %(staza.id)s
+    AND lower(staza.naziv) LIKE %(staza.naziv)s
     AND lower(staza.oznaka_drzave) LIKE %(staza.oznaka_drzave)s
     AND lower(cast(staza.datum_otvorenja AS VARCHAR)) LIKE %(staza.datum_otvorenja)s
     AND lower(staza.podloga) LIKE %(staza.podloga)s
